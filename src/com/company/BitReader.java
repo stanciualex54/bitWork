@@ -18,7 +18,6 @@ public class BitReader {
         numberOfBitsRead = 0;
         Path filePath = Paths.get("D:\\Sem1\\Morariu\\test.txt");
         bytesFromFile = Files.readAllBytes(filePath);
-        bufferReader = bytesFromFile[0];
         count = 0;
     }
 
@@ -26,7 +25,7 @@ public class BitReader {
         return numberOfBitsRead == 0;
     }
 
-    public int readBit() {
+    private int readBit() {
 
         if (isBufferEmpty()) {
             bufferReader = bytesFromFile[count];
@@ -47,16 +46,5 @@ public class BitReader {
 
         }
         return bitNumber;
-    }
-
-    public static void main(String[] args) throws IOException {
-
-        BitReader bitReader = new BitReader();
-        System.out.println(bitReader.bytesFromFile[0]);
-        System.out.println(bitReader.bytesFromFile[1]);
-        System.out.println();
-        System.out.println(bitReader.readNBits(16));
-
-
     }
 }
