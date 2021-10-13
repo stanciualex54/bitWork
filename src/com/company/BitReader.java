@@ -7,20 +7,56 @@ import java.nio.file.Paths;
 
 public class BitReader {
 
-    private static byte[] bufferReader;
+    private byte bufferReader;
     private int numberOfBitsRead;
+    private final byte[] bytesFromFile;
+    private int count;
 
 
-    public static void readBit(Path filePath) throws IOException {
+    public BitReader() throws IOException {
 
-        bufferReader = Files.readAllBytes(filePath);
+        numberOfBitsRead = 0;
+        Path filePath = Paths.get("D:\\Sem1\\Morariu\\test.txt");
+        bytesFromFile = Files.readAllBytes(filePath);
+        bufferReader = bytesFromFile[0];
+        count = 0;
+    }
 
+    private boolean isBufferEmpty() {
+        return numberOfBitsRead == 0;
+    }
+
+    public int readBit() {
+
+        if (isBufferEmpty()) {
+            bufferReader = bytesFromFile[count];
+            numberOfBitsRead = 8;
+            count++;
+        }
+        int bit = (bufferReader >> numberOfBitsRead - 1) % 2;
+        numberOfBitsRead--;
+        return bit;
+    }
+
+    public int readNBits(int nr){
+
+        int bitNumber = 0;
+        for(int i = 0; i < nr; i++){
+            int bit = readBit();
+            bitNumber = 2 * bitNumber + bit;
+
+        }
+        return bitNumber;
     }
 
     public static void main(String[] args) throws IOException {
 
-        Path filePath = Paths.get("D:\\Sem1\\Morariu\\test.txt");
-        readBit(filePath);
+        BitReader bitReader = new BitReader();
+        System.out.println(bitReader.bytesFromFile[0]);
+        System.out.println(bitReader.bytesFromFile[1]);
+        System.out.println();
+        System.out.println(bitReader.readNBits(16));
+
 
     }
 }
