@@ -1,32 +1,41 @@
 package com.company;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 
 public class BitWriter {
 
     private byte bufferWriter;
     private int numberOfBitsWritten;
+    private final FileOutputStream out;
 
-    public BitWriter(){
+
+
+    public BitWriter() throws IOException {
         numberOfBitsWritten = 0;
+        out = new FileOutputStream("the-file-name");
     }
 
     private boolean isBufferFull() {
         return numberOfBitsWritten == 8;
     }
 
-    private void writeBit(int value) {
+    private void writeBit(int value) throws IOException {
 
-        int lastBit = (value >> numberOfBitsWritten) % 2;
-        bufferWriter = (byte) (2 * bufferWriter + lastBit);
+        bufferWriter = (byte) (2 * bufferWriter + value);
         numberOfBitsWritten++;
 
         if (isBufferFull()) {
             numberOfBitsWritten = 0;
-           //write to file
+            out.write(bufferWriter);
+        }
+    }
+
+    public void writeNBits(int numberOfBits, int value) throws IOException {
+
+        for(int i = numberOfBits - 1; i >= 0; i--){
+            int bit = (value >> i) % 2;
+            writeBit(bit);
         }
     }
 }

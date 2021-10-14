@@ -37,10 +37,10 @@ public class BitReader {
         return bit;
     }
 
-    public int readNBits(int nr){
+    public int readNBits(int numberOfBits){
 
         int bitNumber = 0;
-        for(int i = 0; i < nr; i++){
+        for(int i = 0; i < numberOfBits; i++){
             int bit = readBit();
             bitNumber = 2 * bitNumber + bit;
 
